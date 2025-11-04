@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авиационная система мониторинга</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="header-content">
+                <h1>✈️ Авиационная система мониторинга</h1>
+                <div id="user-info" class="user-info" style="display: none;">
+                    <span id="username"></span>
+                    <button id="logout-btn" class="btn btn-secondary">Выйти</button>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Страница входа -->
+            <div id="login-page" class="page">
+                <div class="login-container">
+                    <h2>Вход в систему</h2>
+                    <form id="login-form" class="login-form">
+                        <div class="form-group">
+                            <label for="login-username">Логин:</label>
+                            <input type="text" id="login-username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Пароль:</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                    </form>
+                    <div id="login-error" class="error-message" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- Главная страница после входа -->
+            <div id="main-page" class="page" style="display: none;">
+                <div class="welcome-section">
+                    <h2>Добро пожаловать в систему мониторинга!</h2>
+                    <p>Выберите раздел для просмотра информации</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- Статус флота Boeing -->
+                    <div class="dashboard-card" data-page="boeing-status">
+                        <div class="card-icon">✈️</div>
+                        <h3>Fleet Status Boeing</h3>
+                        <p>Мониторинг состояния воздушных судов Boeing</p>
+                        <div class="card-stats">
+                            <span class="stat">12 ВС</span>
+                            <span class="stat active">10 в эксплуатации</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Статус флота Airbus -->
+                    <div class="dashboard-card" data-page="airbus-status">
+                        <div class="card-icon">🛩️</div>
+                        <h3>Fleet Status Airbus</h3>
+                        <p>Мониторинг состояния воздушных судов Airbus</p>
+                        <div class="card-stats">
+                            <span class="stat">8 ВС</span>
+                            <span class="stat active">7 в эксплуатации</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Статус флота SSJ -->
+                    <div class="dashboard-card" data-page="rrj-status">
+                        <div class="card-icon">🇷🇺</div>
+                        <h3>Fleet Status SSJ</h3>
+                        <p>Мониторинг состояния воздушных судов Sukhoi Superjet</p>
+                        <div class="card-stats">
+                            <span class="stat">6 ВС</span>
+                            <span class="stat active">5 в эксплуатации</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Статус наземного обслуживания -->
+                    <div class="dashboard-card" data-page="ground-handling">
+                        <div class="card-icon">🛠️</div>
+                        <h3>Ground Handling Status</h3>
+                        <p>Статус наземного обслуживания и обработки</p>
+                        <div class="card-stats">
+                            <span class="stat">24/7</span>
+                            <span class="stat active">Норма</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Колеса и тормоза -->
+                    <div class="dashboard-card" data-page="wheels-brakes">
+                        <div class="card-icon">🛞</div>
+                        <h3>Wheel & Brakes</h3>
+                        <p>Мониторинг состояния колес и тормозных систем</p>
+                        <div class="card-stats">
+                            <span class="stat">98%</span>
+                            <span class="stat active">Исправно</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Передача смены -->
+                    <div class="dashboard-card" data-page="shift-handover">
+                        <div class="card-icon">📋</div>
+                        <h3>Передача смены</h3>
+                        <p>Система документирования передачи смен</p>
+                        <div class="card-stats">
+                            <span class="stat">3 смены</span>
+                            <span class="stat active">Активна</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Быстрый статус -->
+                <div class="quick-status">
+                    <h3>Быстрый обзор системы</h3>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <span class="status-label">Всего ВС:</span>
+                            <span class="status-value">26</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">В эксплуатации:</span>
+                            <span class="status-value">22</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">На ТО:</span>
+                            <span class="status-value">4</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Статус системы:</span>
+                            <span class="status-value success">Норма</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Авиационная система мониторинга &copy; 2024</p>
+        </footer>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
