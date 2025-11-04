@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Status RRJ</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/rrj-status.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="header-content">
+                <h1>✈️ Fleet Status RRJ</h1>
+                <div class="user-info">
+                    <span id="username"></span>
+                    <button onclick="window.location.href='../index.html'" class="btn btn-secondary">На главную</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="page-controls">
+                <button onclick="window.location.href='../index.html'" class="btn btn-secondary">← Назад</button>
+                <div class="last-update">
+                    Последнее обновление: <span id="last-update-time"></span>
+                </div>
+            </div>
+
+            <!-- Статистика по флоту -->
+            <div class="fleet-stats">
+                <div class="stat-card total">
+                    <h3>Всего ВС</h3>
+                    <div class="stat-number" id="total-aircraft">0</div>
+                </div>
+                <div class="stat-card aog">
+                    <h3>AOG</h3>
+                    <div class="stat-number" id="aog-count">0</div>
+                </div>
+                <div class="stat-card limitations">
+                    <h3>С ограничениями</h3>
+                    <div class="stat-number" id="limitations-count">0</div>
+                </div>
+                <div class="stat-card maintenance">
+                    <h3>На ТО</h3>
+                    <div class="stat-number" id="maintenance-count">0</div>
+                </div>
+                <div class="stat-card operational">
+                    <h3>Эксплуатируется</h3>
+                    <div class="stat-number" id="operational-count">0</div>
+                </div>
+            </div>
+
+            <!-- AOG Aircraft -->
+            <section class="section">
+    <div class="section-header">
+        <div class="section-title">
+            <h2>🚨 AOG Aircraft (Aircraft On Ground)</h2>
+            <span class="badge critical" id="aog-badge">0</span>
+        </div>
+        <button class="btn btn-primary" onclick="rrjStatus.showAddAOGForm()">+ Добавить AOG</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="aog-table">
+                        <thead>
+                            <tr>
+                                <th>Рег. номер</th>
+                                <th>Причина AOG</th>
+                                <th>Время ввода</th>
+                                <th>Предпол. время вывода</th>
+                                <th>Текущее время простоя</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody id="aog-tbody">
+                            <!-- Данные будут загружены через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Aircraft with Limitations -->
+            <section class="section">
+    <div class="section-header">
+        <div class="section-title">
+            <h2>⚠️ Aircraft with Flight Limitations</h2>
+            <span class="badge warning" id="limitations-badge">0</span>
+        </div>
+        <button class="btn btn-primary" onclick="rrjStatus.showAddLimitationForm()">+ Добавить ограничение</button>
+    </div>
+    <div class="table-container">
+        <table class="data-table" id="limitations-table">
+            <thead>
+                <tr>
+                    <th>Рег. номер</th>
+                    <th>Описание ограничения</th>
+                    <th>Действует до</th>
+                    <th>Осталось дней</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody id="limitations-tbody">
+                <!-- Данные будут загружены через JS -->
+            </tbody>
+        </table>
+    </div>
+</section>
+
+            <!-- Aircraft in Maintenance -->
+            <section class="section">
+    <div class="section-header">
+        <div class="section-title">
+            <h2>🛠️ Aircraft in Maintenance</h2>
+            <span class="badge info" id="maintenance-badge">0</span>
+        </div>
+        <button class="btn btn-primary" onclick="rrjStatus.showAddMaintenanceForm()">+ Добавить ТО</button>
+    </div>
+    <div class="table-container">
+        <table class="data-table" id="maintenance-table">
+            <thead>
+                <tr>
+                    <th>Рег. номер</th>
+                    <th>Форма ТО</th>
+                    <th>Начало ТО</th>
+                    <th>Окончание ТО</th>
+                    <th>Прогресс</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody id="maintenance-tbody">
+                <!-- Данные будут загружены через JS -->
+            </tbody>
+        </table>
+    </div>
+</section>
+        </main>
+
+        <!-- Модальное окно для деталей AOG -->
+        <div id="aog-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Детали AOG</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body" id="aog-modal-body">
+                    <!-- Контент будет заполнен через JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Модальное окно для деталей ограничений -->
+         <div id="limitation-modal" class="modal">
+             <div class="modal-content">
+                <div class="modal-header">
+                 <h3>Детали ограничения</h3>
+                 <span class="close limitation-close">&times;</span>
+             </div>
+          <div class="modal-body" id="limitation-modal-body">
+            <!-- Контент будет заполнен через JS -->
+        </div>
+    </div>
+</div>
+<!-- Модальное окно для деталей ТО -->
+<div id="maintenance-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Детали технического обслуживания</h3>
+            <span class="close maintenance-close">&times;</span>
+        </div>
+        <div class="modal-body" id="maintenance-modal-body">
+            <!-- Контент будет заполнен через JS -->
+        </div>
+    </div>
+</div>
+<!-- Модальное окно для добавления AOG -->
+<div id="add-aog-modal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3>Добавить AOG</h3>
+            <span class="close" onclick="rrjStatus.closeAddAOGForm()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="add-aog-form" class="modal-form">
+                <div class="form-group">
+                    <label for="aog-registration">Регистрационный номер *</label>
+                    <input type="text" id="aog-registration" name="registration" required>
+                </div>
+                <div class="form-group">
+                    <label for="aog-reason">Причина AOG *</label>
+                    <textarea id="aog-reason" name="reason" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="aog-estimated-end">Предполагаемое время восстановления *</label>
+                    <input type="datetime-local" id="aog-estimated-end" name="estimatedEnd" required>
+                </div>
+                <div class="form-group">
+                    <label for="aog-priority">Приоритет</label>
+                    <select id="aog-priority" name="priority">
+                        <option value="critical">Высокий</option>
+                        <option value="warning">Средний</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="aog-responsible">Ответственный *</label>
+                    <input type="text" id="aog-responsible" name="responsible" required>
+                </div>
+                <div class="form-group">
+                    <label for="aog-parts">Необходимые запчасти</label>
+                    <textarea id="aog-parts" name="parts" rows="2" placeholder="Через запятую"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="aog-notes">Примечания</label>
+                    <textarea id="aog-notes" name="notes" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="rrjStatus.closeAddAOGForm()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для добавления ограничения -->
+<div id="add-limitation-modal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3>Добавить ограничение</h3>
+            <span class="close" onclick="rrjStatus.closeAddLimitationForm()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="add-limitation-form" class="modal-form">
+                <div class="form-group">
+                    <label for="limitation-registration">Регистрационный номер *</label>
+                    <input type="text" id="limitation-registration" name="registration" required>
+                </div>
+                <div class="form-group">
+                    <label for="limitation-type">Тип ограничения *</label>
+                    <select id="limitation-type" name="limitationType" required>
+                        <option value="Высота полета">Высота полета</option>
+                        <option value="Скорость полета">Скорость полета</option>
+                        <option value="Погодные условия">Погодные условия</option>
+                        <option value="Вес">Вес</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="limitation-description">Описание ограничения *</label>
+                    <textarea id="limitation-description" name="description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="limitation-details">Детали ограничения</label>
+                    <textarea id="limitation-details" name="details" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="limitation-valid-until">Действует до *</label>
+                    <input type="date" id="limitation-valid-until" name="validUntil" required>
+                </div>
+                <div class="form-group">
+                    <label for="limitation-mels">Ссылка на MEL</label>
+                    <input type="text" id="limitation-mels" name="mels">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="rrjStatus.closeAddLimitationForm()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для добавления ТО -->
+<div id="add-maintenance-modal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3>Добавить техническое обслуживание</h3>
+            <span class="close" onclick="rrjStatus.closeAddMaintenanceForm()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="add-maintenance-form" class="modal-form">
+                <div class="form-group">
+                    <label for="maintenance-registration">Регистрационный номер *</label>
+                    <input type="text" id="maintenance-registration" name="registration" required>
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-form">Форма ТО *</label>
+                    <select id="maintenance-form" name="maintenanceForm" required>
+                        <option value="A-Check">A-Check</option>
+                        <option value="B-Check">B-Check</option>
+                        <option value="C-Check">C-Check</option>
+                        <option value="D-Check">D-Check</option>
+                        <option value="Line Maintenance">Line Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-description">Описание работ</label>
+                    <textarea id="maintenance-description" name="description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-start">Начало ТО *</label>
+                    <input type="date" id="maintenance-start" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-end">Окончание ТО *</label>
+                    <input type="date" id="maintenance-end" name="endDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-hangar">Ангар/Линия</label>
+                    <input type="text" id="maintenance-hangar" name="hangar">
+                </div>
+                <div class="form-group">
+                    <label for="maintenance-supervisor">Ответственный</label>
+                    <input type="text" id="maintenance-supervisor" name="supervisor">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="rrjStatus.closeAddMaintenanceForm()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Кнопка архива -->
+<div class="archive-section">
+    <button class="btn btn-outline" onclick="rrjStatus.showArchive()">📁 Перейти в архив</button>
+</div>
+
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/rrj-status.js"></script>
+</body>
+</html>
